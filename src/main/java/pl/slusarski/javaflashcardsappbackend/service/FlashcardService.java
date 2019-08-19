@@ -16,4 +16,12 @@ public class FlashcardService {
     public Iterable<Flashcard> findAllFlashcards() {
         return flashcardRepository.findAll();
     }
+
+    public Iterable<String> findAllCategories() {
+        return flashcardRepository.findAllCategories();
+    }
+
+    public Iterable<Flashcard> findAllFlashcardsByCategoryAndKnowledgeLevel(String category) {
+        return flashcardRepository.findAllByCategoryAndKnowledgeLevelIn(category, new int[] {0, 1});
+    }
 }

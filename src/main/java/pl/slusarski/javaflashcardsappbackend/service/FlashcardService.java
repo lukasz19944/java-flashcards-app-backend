@@ -28,4 +28,13 @@ public class FlashcardService {
     public Flashcard saveOrUpdateFlashcard(Flashcard flashcard) {
         return flashcardRepository.save(flashcard);
     }
+
+    public long countAllFlashcards() {
+        return flashcardRepository.count();
+    }
+
+    public long countAllFlashcardsByKnowledge() {
+        return flashcardRepository.countByKnowledgeLevel(2);
+    }
+
 }

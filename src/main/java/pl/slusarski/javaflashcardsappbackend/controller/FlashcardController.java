@@ -34,4 +34,15 @@ public class FlashcardController {
     public Flashcard createOrUpdateNewFlashcard(@RequestBody Flashcard flashcard) {
         return flashcardService.saveOrUpdateFlashcard(flashcard);
     }
+
+    @GetMapping("/count/")
+    public long countAllFlashcards() {
+        return flashcardService.countAllFlashcards();
+    }
+
+    @GetMapping("/count/level")
+    public long countAllFlashcardsByKnowledge() {
+        return flashcardService.countAllFlashcardsByKnowledge();
+    }
+
 }

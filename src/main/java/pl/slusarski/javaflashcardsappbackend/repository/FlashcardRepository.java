@@ -12,4 +12,8 @@ public interface FlashcardRepository extends CrudRepository<Flashcard, Long> {
     Iterable<String> findAllCategories();
 
     Iterable<Flashcard> findAllByCategoryAndKnowledgeLevelIn(String category, int[] knowledgeLevels);
+
+    long count();
+
+    long countByKnowledgeLevel(int level);
 }

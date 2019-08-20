@@ -4,6 +4,8 @@ import org.springframework.web.bind.annotation.*;
 import pl.slusarski.javaflashcardsappbackend.domain.Flashcard;
 import pl.slusarski.javaflashcardsappbackend.service.FlashcardService;
 
+import java.util.Map;
+
 @RestController
 @CrossOrigin
 @RequestMapping("/api/flashcard")
@@ -43,6 +45,16 @@ public class FlashcardController {
     @GetMapping("/count/level")
     public long countAllFlashcardsByKnowledge() {
         return flashcardService.countAllFlashcardsByKnowledge();
+    }
+
+    @GetMapping("/count/category/")
+    public Map<String, Integer> countAllFlashcardsByCategory() {
+        return flashcardService.countAllFlashcardsByCategory();
+    }
+
+    @GetMapping("/count/category-level/")
+    public Map<String, Integer> countAllFlashcardsByCategoryAndKnowledge() {
+        return flashcardService.countAllFlashcardsByCategoryAndKnowledgeLevel();
     }
 
 }

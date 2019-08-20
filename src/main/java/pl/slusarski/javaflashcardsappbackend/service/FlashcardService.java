@@ -24,4 +24,8 @@ public class FlashcardService {
     public Iterable<Flashcard> findAllFlashcardsByCategoryAndKnowledgeLevel(String category) {
         return flashcardRepository.findAllByCategoryAndKnowledgeLevelIn(category, new int[] {0, 1});
     }
+
+    public Flashcard saveOrUpdateFlashcard(Flashcard flashcard) {
+        return flashcardRepository.save(flashcard);
+    }
 }

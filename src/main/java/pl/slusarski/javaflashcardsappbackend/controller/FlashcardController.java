@@ -29,4 +29,9 @@ public class FlashcardController {
     public Iterable<Flashcard> findAllFlashcardsByCategoryAndKnowledgeLevel(@PathVariable String category) {
         return flashcardService.findAllFlashcardsByCategoryAndKnowledgeLevel(category);
     }
+
+    @PostMapping("")
+    public Flashcard createOrUpdateNewFlashcard(@RequestBody Flashcard flashcard) {
+        return flashcardService.saveOrUpdateFlashcard(flashcard);
+    }
 }

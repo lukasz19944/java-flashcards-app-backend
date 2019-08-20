@@ -1,8 +1,10 @@
 package pl.slusarski.javaflashcardsappbackend.repository;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import pl.slusarski.javaflashcardsappbackend.domain.Flashcard;
 
 import java.util.List;
@@ -25,4 +27,8 @@ public interface FlashcardRepository extends CrudRepository<Flashcard, Long> {
     @Query("SELECT f.category, COUNT(f) FROM Flashcard f WHERE f.knowledgeLevel = 2 GROUP BY f.category")
     List<Object[]> countByCategoryAndKnowledgeLevel();
 
+    @Transactional
+    @Modifying
+    @Query("UPDATE Flashcard f SET f.knowledgeLevel = 0")
+    void resetProgress();
 }

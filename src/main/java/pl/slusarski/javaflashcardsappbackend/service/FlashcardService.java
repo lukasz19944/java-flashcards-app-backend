@@ -76,4 +76,9 @@ public class FlashcardService {
 
         return categoryCountMap;
     }
+
+    public void resetProgress() {
+        flashcardRepository.resetProgress();
+    }
+
 }

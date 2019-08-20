@@ -57,4 +57,9 @@ public class FlashcardController {
         return flashcardService.countAllFlashcardsByCategoryAndKnowledgeLevel();
     }
 
+    @GetMapping("/reset/")
+    public void resetProgress() {
+        flashcardService.resetProgress();
+    }
+
 }

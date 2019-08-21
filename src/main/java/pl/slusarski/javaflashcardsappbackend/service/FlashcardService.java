@@ -7,6 +7,7 @@ import pl.slusarski.javaflashcardsappbackend.repository.FlashcardRepository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class FlashcardService {
@@ -81,4 +82,13 @@ public class FlashcardService {
         flashcardRepository.resetProgress();
     }
 
+    public Flashcard findFlashcardById(Long id) {
+        Optional<Flashcard> flashcardOptional = flashcardRepository.findById(id);
+
+        return flashcardOptional.get();
+    }
+
+    public void deleteFlashcardById(Long id) {
+        flashcardRepository.delete(findFlashcardById(id));
+    }
 }

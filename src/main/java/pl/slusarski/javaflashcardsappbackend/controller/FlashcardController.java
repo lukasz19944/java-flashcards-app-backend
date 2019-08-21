@@ -62,4 +62,8 @@ public class FlashcardController {
         flashcardService.resetProgress();
     }
 
+    @DeleteMapping("/{flashcardId}")
+    public void deleteFlashcard(@PathVariable String flashcardId) {
+        flashcardService.deleteFlashcardById(Long.parseLong(flashcardId));
+    }
 }

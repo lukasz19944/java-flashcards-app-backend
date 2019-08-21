@@ -1,9 +1,14 @@
 package pl.slusarski.javaflashcardsappbackend.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.slusarski.javaflashcardsappbackend.domain.Flashcard;
+import pl.slusarski.javaflashcardsappbackend.service.ErrorService;
 import pl.slusarski.javaflashcardsappbackend.service.FlashcardService;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 @RestController
@@ -12,9 +17,11 @@ import java.util.Map;
 public class FlashcardController {
 
     private final FlashcardService flashcardService;
+    private final ErrorService errorService;
 
-    public FlashcardController(FlashcardService flashcardService) {
+    public FlashcardController(FlashcardService flashcardService, ErrorService errorService) {
         this.flashcardService = flashcardService;
+        this.errorService = errorService;
     }
 
     @GetMapping("")
@@ -33,8 +40,16 @@ public class FlashcardController {
     }
 
     @PostMapping("")
-    public Flashcard createOrUpdateNewFlashcard(@RequestBody Flashcard flashcard) {
-        return flashcardService.saveOrUpdateFlashcard(flashcard);
+    public ResponseEntity<?> createOrUpdateNewFlashcard(@Valid @RequestBody Flashcard flashcard, BindingResult result) {
+        ResponseEntity<?> errorMap = errorService.mapValidationService(result);
+
+        if (errorMap != null) {
+            return errorMap;
+        }
+
+        Flashcard newFlashcard = flashcardService.saveOrUpdateFlashcard(flashcard);
+
+        return new ResponseEntity<>(newFlashcard, HttpStatus.CREATED);
     }
 
     @GetMapping("/count/")

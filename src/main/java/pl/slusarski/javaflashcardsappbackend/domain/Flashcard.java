@@ -1,6 +1,8 @@
 package pl.slusarski.javaflashcardsappbackend.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.util.Objects;
 
 @Entity
 public class Flashcard {
@@ -9,8 +11,11 @@ public class Flashcard {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Powyższe pole jest wymagane")
     private String question;
+    @NotBlank(message = "Powyższe pole jest wymagane")
     private String answer;
+    @NotBlank(message = "Powyższe pole jest wymagane")
     private String category;
 
     private int knowledgeLevel;
@@ -58,5 +63,22 @@ public class Flashcard {
     @PrePersist
     protected void onCreate() {
         this.knowledgeLevel = 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Flashcard)) return false;
+        Flashcard flashcard = (Flashcard) o;
+        return knowledgeLevel == flashcard.knowledgeLevel &&
+                Objects.equals(id, flashcard.id) &&
+                Objects.equals(question, flashcard.question) &&
+                Objects.equals(answer, flashcard.answer) &&
+                Objects.equals(category, flashcard.category);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, question, answer, category, knowledgeLevel);
     }
 }

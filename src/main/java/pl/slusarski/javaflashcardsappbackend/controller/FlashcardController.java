@@ -66,4 +66,9 @@ public class FlashcardController {
     public void deleteFlashcard(@PathVariable String flashcardId) {
         flashcardService.deleteFlashcardById(Long.parseLong(flashcardId));
     }
+
+    @GetMapping("/{flashcardId}")
+    public Flashcard getFlashcardById(@PathVariable String flashcardId) {
+        return flashcardService.findFlashcardById(Long.parseLong(flashcardId));
+    }
 }

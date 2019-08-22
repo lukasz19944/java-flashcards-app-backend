@@ -13,6 +13,7 @@ public class Flashcard {
 
     @NotBlank(message = "Powyższe pole jest wymagane")
     private String question;
+    @Column(length = 3000)
     @NotBlank(message = "Powyższe pole jest wymagane")
     private String answer;
     @NotBlank(message = "Powyższe pole jest wymagane")

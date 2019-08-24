@@ -4,10 +4,8 @@ import org.springframework.stereotype.Service;
 import pl.slusarski.javaflashcardsappbackend.domain.Flashcard;
 import pl.slusarski.javaflashcardsappbackend.repository.FlashcardRepository;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.security.SecureRandom;
+import java.util.*;
 
 @Service
 public class FlashcardService {
@@ -27,7 +25,7 @@ public class FlashcardService {
     }
 
     public Iterable<Flashcard> findAllFlashcardsByCategoryAndKnowledgeLevel(String category) {
-        return flashcardRepository.findAllByCategoryAndKnowledgeLevelIn(category, new int[] {0, 1});
+        return flashcardRepository.findAllByCategoryAndKnowledgeLevelIn(category, new int[]{0, 1});
     }
 
     public Flashcard saveOrUpdateFlashcard(Flashcard flashcard) {
@@ -91,4 +89,19 @@ public class FlashcardService {
     public void deleteFlashcardById(Long id) {
         flashcardRepository.delete(findFlashcardById(id));
     }
+
+    public Iterable<Flashcard> createRandomTest() {
+        List<Flashcard> flashcards = (List<Flashcard>) flashcardRepository.findAll();
+
+        List<Flashcard> randomFlashcards = new ArrayList<>();
+        List<Flashcard> copy = new ArrayList<>(flashcards);
+
+        SecureRandom rand = new SecureRandom();
+        for (int i = 0; i < Math.min(20, flashcards.size()); i++) {
+            randomFlashcards.add(copy.remove(rand.nextInt(copy.size())));
+        }
+
+        return randomFlashcards;
+    }
+
 }

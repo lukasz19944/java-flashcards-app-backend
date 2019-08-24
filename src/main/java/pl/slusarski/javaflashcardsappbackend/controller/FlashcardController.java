@@ -86,4 +86,9 @@ public class FlashcardController {
     public Flashcard getFlashcardById(@PathVariable String flashcardId) {
         return flashcardService.findFlashcardById(Long.parseLong(flashcardId));
     }
+
+    @GetMapping("/random/")
+    public Iterable<Flashcard> createRandomTest() {
+        return flashcardService.createRandomTest();
+    }
 }

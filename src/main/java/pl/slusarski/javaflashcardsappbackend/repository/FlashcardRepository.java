@@ -31,4 +31,5 @@ public interface FlashcardRepository extends CrudRepository<Flashcard, Long> {
     @Modifying
     @Query("UPDATE Flashcard f SET f.knowledgeLevel = 0")
     void resetProgress();
+
 }

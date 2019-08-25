@@ -21,6 +21,8 @@ public class Flashcard {
 
     private int knowledgeLevel;
 
+    private Difficulty difficulty;
+
     public Long getId() {
         return id;
     }
@@ -61,6 +63,14 @@ public class Flashcard {
         this.knowledgeLevel = knowledgeLevel;
     }
 
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
+    }
+
     @PrePersist
     protected void onCreate() {
         this.knowledgeLevel = 0;
@@ -75,11 +85,13 @@ public class Flashcard {
                 Objects.equals(id, flashcard.id) &&
                 Objects.equals(question, flashcard.question) &&
                 Objects.equals(answer, flashcard.answer) &&
-                Objects.equals(category, flashcard.category);
+                Objects.equals(category, flashcard.category) &&
+                difficulty == flashcard.difficulty;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, question, answer, category, knowledgeLevel);
+
+        return Objects.hash(id, question, answer, category, knowledgeLevel, difficulty);
     }
 }

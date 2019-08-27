@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import pl.slusarski.javaflashcardsappbackend.domain.Difficulty;
 import pl.slusarski.javaflashcardsappbackend.domain.Flashcard;
 
 import java.util.List;
@@ -16,6 +17,8 @@ public interface FlashcardRepository extends CrudRepository<Flashcard, Long> {
     Iterable<String> findAllCategories();
 
     Iterable<Flashcard> findAllByCategoryAndKnowledgeLevelIn(String category, int[] knowledgeLevels);
+
+    Iterable<Flashcard> findAllByCategoryAndKnowledgeLevelInAndDifficultyIn(String category, int[] knowledgeLevels, Difficulty[] difficulties);
 
     long count();
 

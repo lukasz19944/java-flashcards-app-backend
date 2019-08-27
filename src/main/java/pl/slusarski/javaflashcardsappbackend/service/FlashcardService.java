@@ -1,6 +1,7 @@
 package pl.slusarski.javaflashcardsappbackend.service;
 
 import org.springframework.stereotype.Service;
+import pl.slusarski.javaflashcardsappbackend.domain.Difficulty;
 import pl.slusarski.javaflashcardsappbackend.domain.Flashcard;
 import pl.slusarski.javaflashcardsappbackend.repository.FlashcardRepository;
 
@@ -26,6 +27,18 @@ public class FlashcardService {
 
     public Iterable<Flashcard> findAllFlashcardsByCategoryAndKnowledgeLevel(String category) {
         return flashcardRepository.findAllByCategoryAndKnowledgeLevelIn(category, new int[]{0, 1});
+    }
+
+    public Iterable<Flashcard> findAllFlashcardsByCategoryAndKnowledgeLevelAndDifficulty(String category, String difficulty) {
+        Difficulty[] difficulties;
+
+        if (difficulty.equals("all")) {
+            difficulties = Difficulty.values();
+        } else {
+            difficulties = new Difficulty[]{Difficulty.valueOf(difficulty.toUpperCase())};
+        }
+
+        return flashcardRepository.findAllByCategoryAndKnowledgeLevelInAndDifficultyIn(category, new int[]{0, 1}, difficulties);
     }
 
     public Flashcard saveOrUpdateFlashcard(Flashcard flashcard) {

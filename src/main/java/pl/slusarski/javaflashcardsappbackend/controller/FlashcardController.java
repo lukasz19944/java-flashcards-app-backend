@@ -39,6 +39,11 @@ public class FlashcardController {
         return flashcardService.findAllFlashcardsByCategoryAndKnowledgeLevel(category);
     }
 
+    @GetMapping("/category/{category}/{difficulty}")
+    public Iterable<Flashcard> findAllFlashcardsByCategoryAndKnowledgeLevelAndDifficulty(@PathVariable String category, @PathVariable String difficulty) {
+        return flashcardService.findAllFlashcardsByCategoryAndKnowledgeLevelAndDifficulty(category, difficulty);
+    }
+
     @PostMapping("")
     public ResponseEntity<?> createOrUpdateNewFlashcard(@Valid @RequestBody Flashcard flashcard, BindingResult result) {
         ResponseEntity<?> errorMap = errorService.mapValidationService(result);

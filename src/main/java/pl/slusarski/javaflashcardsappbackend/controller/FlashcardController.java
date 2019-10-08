@@ -34,15 +34,6 @@ public class FlashcardController {
         return flashcardService.findAllCategories();
     }
 
-    @GetMapping("/category/{category}")
-    public Iterable<Flashcard> findAllFlashcardsByCategoryAndKnowledgeLevel(@PathVariable String category) {
-        return flashcardService.findAllFlashcardsByCategoryAndKnowledgeLevel(category);
-    }
-
-    @GetMapping("/category/{category}/{difficulty}")
-    public Iterable<Flashcard> findAllFlashcardsByCategoryAndKnowledgeLevelAndDifficulty(@PathVariable String category, @PathVariable String difficulty) {
-        return flashcardService.findAllFlashcardsByCategoryAndKnowledgeLevelAndDifficulty(category, difficulty);
-    }
 
     @PostMapping("")
     public ResponseEntity<?> createOrUpdateNewFlashcard(@Valid @RequestBody Flashcard flashcard, BindingResult result) {
@@ -62,24 +53,9 @@ public class FlashcardController {
         return flashcardService.countAllFlashcards();
     }
 
-    @GetMapping("/count/level")
-    public long countAllFlashcardsByKnowledge() {
-        return flashcardService.countAllFlashcardsByKnowledge();
-    }
-
     @GetMapping("/count/category/")
     public Map<String, Integer> countAllFlashcardsByCategory() {
         return flashcardService.countAllFlashcardsByCategory();
-    }
-
-    @GetMapping("/count/category-level/")
-    public Map<String, Integer> countAllFlashcardsByCategoryAndKnowledge() {
-        return flashcardService.countAllFlashcardsByCategoryAndKnowledgeLevel();
-    }
-
-    @GetMapping("/reset/")
-    public void resetProgress() {
-        flashcardService.resetProgress();
     }
 
     @DeleteMapping("/{flashcardId}")

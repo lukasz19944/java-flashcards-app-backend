@@ -1,11 +1,8 @@
 package pl.slusarski.javaflashcardsappbackend.repository;
 
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-import pl.slusarski.javaflashcardsappbackend.domain.Difficulty;
 import pl.slusarski.javaflashcardsappbackend.domain.Flashcard;
 
 import java.util.List;
@@ -16,23 +13,11 @@ public interface FlashcardRepository extends CrudRepository<Flashcard, Long> {
     @Query("SELECT DISTINCT f.category FROM Flashcard f")
     Iterable<String> findAllCategories();
 
-    Iterable<Flashcard> findAllByCategoryAndKnowledgeLevelIn(String category, int[] knowledgeLevels);
-
-    Iterable<Flashcard> findAllByCategoryAndKnowledgeLevelInAndDifficultyIn(String category, int[] knowledgeLevels, Difficulty[] difficulties);
-
     long count();
-
-    long countByKnowledgeLevel(int level);
 
     @Query("SELECT f.category, COUNT(f) FROM Flashcard f GROUP BY f.category")
     List<Object[]> countByCategory();
 
-    @Query("SELECT f.category, COUNT(f) FROM Flashcard f WHERE f.knowledgeLevel = 2 GROUP BY f.category")
-    List<Object[]> countByCategoryAndKnowledgeLevel();
 
-    @Transactional
-    @Modifying
-    @Query("UPDATE Flashcard f SET f.knowledgeLevel = 0")
-    void resetProgress();
 
 }

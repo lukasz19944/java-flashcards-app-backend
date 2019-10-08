@@ -1,8 +1,10 @@
 package pl.slusarski.javaflashcardsappbackend.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.slusarski.javaflashcardsappbackend.domain.Difficulty;
 import pl.slusarski.javaflashcardsappbackend.domain.Flashcard;
+import pl.slusarski.javaflashcardsappbackend.domain.User;
+import pl.slusarski.javaflashcardsappbackend.domain.UserFlashcard;
 import pl.slusarski.javaflashcardsappbackend.repository.FlashcardRepository;
 
 import java.security.SecureRandom;
@@ -12,9 +14,14 @@ import java.util.*;
 public class FlashcardService {
 
     private final FlashcardRepository flashcardRepository;
+    private final UserService userService;
 
-    public FlashcardService(FlashcardRepository flashcardRepository) {
+    @Autowired
+    private UserFlashcardService userFlashcardService;
+
+    public FlashcardService(FlashcardRepository flashcardRepository, UserService userService) {
         this.flashcardRepository = flashcardRepository;
+        this.userService = userService;
     }
 
     public Iterable<Flashcard> findAllFlashcards() {
@@ -25,32 +32,26 @@ public class FlashcardService {
         return flashcardRepository.findAllCategories();
     }
 
-    public Iterable<Flashcard> findAllFlashcardsByCategoryAndKnowledgeLevel(String category) {
-        return flashcardRepository.findAllByCategoryAndKnowledgeLevelIn(category, new int[]{0, 1});
-    }
+    public Flashcard saveOrUpdateFlashcard(Flashcard flashcard) {
+        Iterable<User> users = userService.getAllUsers();
 
-    public Iterable<Flashcard> findAllFlashcardsByCategoryAndKnowledgeLevelAndDifficulty(String category, String difficulty) {
-        Difficulty[] difficulties;
+        Flashcard newFlashcard = flashcardRepository.save(flashcard);
 
-        if (difficulty.equals("all")) {
-            difficulties = Difficulty.values();
-        } else {
-            difficulties = new Difficulty[]{Difficulty.valueOf(difficulty.toUpperCase())};
+        for (User user : users) {
+            UserFlashcard userFlashcard = new UserFlashcard();
+
+            userFlashcard.setFlashcard(newFlashcard);
+            userFlashcard.setKnowledgeLevel(0);
+            userFlashcard.setUser(user);
+
+            userFlashcardService.createOrUpdateKnowledgeLevel(userFlashcard);
         }
 
-        return flashcardRepository.findAllByCategoryAndKnowledgeLevelInAndDifficultyIn(category, new int[]{0, 1}, difficulties);
-    }
-
-    public Flashcard saveOrUpdateFlashcard(Flashcard flashcard) {
-        return flashcardRepository.save(flashcard);
+        return newFlashcard;
     }
 
     public long countAllFlashcards() {
         return flashcardRepository.count();
-    }
-
-    public long countAllFlashcardsByKnowledge() {
-        return flashcardRepository.countByKnowledgeLevel(2);
     }
 
     public Map<String, Integer> countAllFlashcardsByCategory() {
@@ -65,32 +66,6 @@ public class FlashcardService {
         }
 
         return categoryCountMap;
-    }
-
-    public Map<String, Integer> countAllFlashcardsByCategoryAndKnowledgeLevel() {
-        List<Object[]> results = flashcardRepository.countByCategoryAndKnowledgeLevel();
-        Map<String, Integer> categoryCountMap = new HashMap<>();
-
-        for (Object[] result : results) {
-            String category = (String) result[0];
-            Integer count = ((Number) result[1]).intValue();
-
-            categoryCountMap.put(category, count);
-        }
-
-        Iterable<String> allCategories = findAllCategories();
-
-        for (String category : allCategories) {
-            if (!categoryCountMap.containsKey(category)) {
-                categoryCountMap.put(category, 0);
-            }
-        }
-
-        return categoryCountMap;
-    }
-
-    public void resetProgress() {
-        flashcardRepository.resetProgress();
     }
 
     public Flashcard findFlashcardById(Long id) {

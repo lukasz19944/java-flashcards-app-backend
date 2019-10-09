@@ -6,6 +6,7 @@ import pl.slusarski.javaflashcardsappbackend.domain.Flashcard;
 import pl.slusarski.javaflashcardsappbackend.domain.User;
 import pl.slusarski.javaflashcardsappbackend.domain.UserFlashcard;
 import pl.slusarski.javaflashcardsappbackend.repository.FlashcardRepository;
+import pl.slusarski.javaflashcardsappbackend.repository.UserFlashcardRepository;
 
 import java.security.SecureRandom;
 import java.util.*;
@@ -15,13 +16,15 @@ public class FlashcardService {
 
     private final FlashcardRepository flashcardRepository;
     private final UserService userService;
+    private final UserFlashcardRepository userFlashcardRepository;
 
     @Autowired
     private UserFlashcardService userFlashcardService;
 
-    public FlashcardService(FlashcardRepository flashcardRepository, UserService userService) {
+    public FlashcardService(FlashcardRepository flashcardRepository, UserService userService, UserFlashcardRepository userFlashcardRepository) {
         this.flashcardRepository = flashcardRepository;
         this.userService = userService;
+        this.userFlashcardRepository = userFlashcardRepository;
     }
 
     public Iterable<Flashcard> findAllFlashcards() {
@@ -75,6 +78,10 @@ public class FlashcardService {
     }
 
     public void deleteFlashcardById(Long id) {
+        Optional<Flashcard> flashcard = flashcardRepository.findById(id);
+
+        userFlashcardService.deleteUserFlashcardByFlashcard(flashcard.get());
+
         flashcardRepository.delete(findFlashcardById(id));
     }
 

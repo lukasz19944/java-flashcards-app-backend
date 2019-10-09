@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import pl.slusarski.javaflashcardsappbackend.domain.Difficulty;
+import pl.slusarski.javaflashcardsappbackend.domain.Flashcard;
 import pl.slusarski.javaflashcardsappbackend.domain.User;
 import pl.slusarski.javaflashcardsappbackend.domain.UserFlashcard;
 
@@ -26,5 +27,7 @@ public interface UserFlashcardRepository extends CrudRepository<UserFlashcard, L
     @Modifying
     @Query("UPDATE UserFlashcard uf SET uf.knowledgeLevel = 0 WHERE uf.user.id = :id")
     void resetProgress(@Param("id") Long id);
+
+    void deleteAllByFlashcard(Flashcard flashcard);
 
 }

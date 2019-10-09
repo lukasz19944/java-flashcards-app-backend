@@ -2,7 +2,9 @@ package pl.slusarski.javaflashcardsappbackend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.slusarski.javaflashcardsappbackend.domain.Difficulty;
+import pl.slusarski.javaflashcardsappbackend.domain.Flashcard;
 import pl.slusarski.javaflashcardsappbackend.domain.User;
 import pl.slusarski.javaflashcardsappbackend.domain.UserFlashcard;
 import pl.slusarski.javaflashcardsappbackend.repository.UserFlashcardRepository;
@@ -83,5 +85,10 @@ public class UserFlashcardService {
 
     public UserFlashcard createOrUpdateKnowledgeLevel(UserFlashcard userFlashcard) {
         return userFlashcardRepository.save(userFlashcard);
+    }
+
+    @Transactional
+    public void deleteUserFlashcardByFlashcard(Flashcard flashcard) {
+        userFlashcardRepository.deleteAllByFlashcard(flashcard);
     }
 }

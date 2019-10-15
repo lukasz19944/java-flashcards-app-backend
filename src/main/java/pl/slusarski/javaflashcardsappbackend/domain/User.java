@@ -3,11 +3,15 @@ package pl.slusarski.javaflashcardsappbackend.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 public class User implements UserDetails {
@@ -28,6 +32,14 @@ public class User implements UserDetails {
     @Transient
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String confirmPassword;
+
+    @ManyToMany
+    @JsonIgnore
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
 
     public User() {
 
@@ -57,6 +69,14 @@ public class User implements UserDetails {
         this.confirmPassword = confirmPassword;
     }
 
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
     @Override
     public String getPassword() {
         return password;
@@ -70,7 +90,11 @@ public class User implements UserDetails {
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+
+        roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
+
+        return authorities;
     }
 
     @Override

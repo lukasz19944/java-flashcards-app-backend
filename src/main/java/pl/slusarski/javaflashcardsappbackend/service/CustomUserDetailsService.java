@@ -19,10 +19,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findByUsername(username);
 
         if (user == null) {
-            new UsernameNotFoundException("User not found");
+            throw new UsernameNotFoundException("User not found");
         }
 
         return user;
+        // lub return new User(user.getUsername(), user.getPassword(), user.getRoles());    // User ze springframework.security
     }
 
     @Transactional
@@ -30,7 +31,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.getById(id);
 
         if (user == null) {
-            new UsernameNotFoundException("User not found");
+            throw new UsernameNotFoundException("User not found");
         }
 
         return user;

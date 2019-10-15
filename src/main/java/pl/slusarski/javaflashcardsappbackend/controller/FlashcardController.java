@@ -2,6 +2,7 @@ package pl.slusarski.javaflashcardsappbackend.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.slusarski.javaflashcardsappbackend.domain.Flashcard;
@@ -24,6 +25,7 @@ public class FlashcardController {
         this.errorService = errorService;
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("")
     public Iterable<Flashcard> getAllFlashcards() {
         return flashcardService.findAllFlashcards();
@@ -34,7 +36,7 @@ public class FlashcardController {
         return flashcardService.findAllCategories();
     }
 
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("")
     public ResponseEntity<?> createOrUpdateNewFlashcard(@Valid @RequestBody Flashcard flashcard, BindingResult result) {
         ResponseEntity<?> errorMap = errorService.mapValidationService(result);
@@ -58,6 +60,7 @@ public class FlashcardController {
         return flashcardService.countAllFlashcardsByCategory();
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{flashcardId}")
     public void deleteFlashcard(@PathVariable String flashcardId) {
         flashcardService.deleteFlashcardById(Long.parseLong(flashcardId));

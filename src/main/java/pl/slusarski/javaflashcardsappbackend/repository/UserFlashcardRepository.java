@@ -14,13 +14,18 @@ import java.util.List;
 
 public interface UserFlashcardRepository extends CrudRepository<UserFlashcard, Long> {
 
-    Iterable<UserFlashcard> findAllByFlashcard_CategoryAndKnowledgeLevelInAndUser(String category, int[] knowledgeLevel, User user);
+    Iterable<UserFlashcard> findAllByFlashcard_CategoryAndKnowledgeLevelInAndUserAndFlashcard_Accepted(
+            String category, int[] knowledgeLevel, User user, boolean accepted);
 
-    Iterable<UserFlashcard> findAllByFlashcard_CategoryAndKnowledgeLevelInAndFlashcard_DifficultyInAndUser(String category, int[] knowledgeLevels, Difficulty[] difficulties, User user);
+    Iterable<UserFlashcard> findAllByFlashcard_CategoryAndKnowledgeLevelInAndFlashcard_DifficultyInAndUserAndFlashcard_Accepted(
+            String category, int[] knowledgeLevels, Difficulty[] difficulties, User user, boolean accepted);
 
-    long countByKnowledgeLevelAndUser(int level, User user);
+    long countByKnowledgeLevelAndUserAndFlashcard_Accepted(
+            int level, User user, boolean accepted);
 
-    @Query("SELECT uf.flashcard.category, COUNT(uf.flashcard.category) FROM UserFlashcard uf WHERE uf.knowledgeLevel = 2 AND uf.user.id = :id GROUP BY uf.flashcard.category")
+    @Query("SELECT uf.flashcard.category, COUNT(uf.flashcard.category) FROM UserFlashcard uf " +
+            "WHERE uf.knowledgeLevel = 2 AND uf.user.id = :id AND uf.flashcard.accepted = 1 " +
+            "GROUP BY uf.flashcard.category")
     List<Object[]> countByFlashcardCategoryAndKnowledgeLevelAndUser(@Param("id") Long id);
 
     @Transactional

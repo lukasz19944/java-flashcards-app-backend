@@ -30,7 +30,7 @@ public class UserFlashcardService {
     public Iterable<UserFlashcard> findAllFlashcardsByCategoryAndKnowledgeLevel(String category, String username) {
         User user = userDetailsService.loadUserByUsername(username);
 
-        return userFlashcardRepository.findAllByFlashcard_CategoryAndKnowledgeLevelInAndUser(category, new int[]{0, 1}, user);
+        return userFlashcardRepository.findAllByFlashcard_CategoryAndKnowledgeLevelInAndUserAndFlashcard_Accepted(category, new int[]{0, 1}, user, true);
     }
 
     public Iterable<UserFlashcard> findAllFlashcardsByCategoryAndKnowledgeLevelAndDifficulty(String category, String difficulty, String username) {
@@ -44,13 +44,13 @@ public class UserFlashcardService {
 
         User user = userDetailsService.loadUserByUsername(username);
 
-        return userFlashcardRepository.findAllByFlashcard_CategoryAndKnowledgeLevelInAndFlashcard_DifficultyInAndUser(category, new int[]{0, 1}, difficulties, user);
+        return userFlashcardRepository.findAllByFlashcard_CategoryAndKnowledgeLevelInAndFlashcard_DifficultyInAndUserAndFlashcard_Accepted(category, new int[]{0, 1}, difficulties, user, true);
     }
 
     public long countAllFlashcardsByKnowledge(String username) {
         User user = userDetailsService.loadUserByUsername(username);
 
-        return userFlashcardRepository.countByKnowledgeLevelAndUser(2, user);
+        return userFlashcardRepository.countByKnowledgeLevelAndUserAndFlashcard_Accepted(2, user, true);
     }
 
     public Map<String, Integer> countAllFlashcardsByCategoryAndKnowledgeLevel(String username) {

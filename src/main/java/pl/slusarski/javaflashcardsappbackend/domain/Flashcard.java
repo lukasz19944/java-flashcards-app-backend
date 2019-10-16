@@ -19,7 +19,7 @@ public class Flashcard {
     @NotBlank(message = "Powyższe pole jest wymagane")
     private String category;
 
-    //private int knowledgeLevel;
+    private boolean accepted;
 
     private Difficulty difficulty;
 
@@ -55,14 +55,6 @@ public class Flashcard {
         this.category = category;
     }
 
-//    public int getKnowledgeLevel() {
-//        return knowledgeLevel;
-//    }
-//
-//    public void setKnowledgeLevel(int knowledgeLevel) {
-//        this.knowledgeLevel = knowledgeLevel;
-//    }
-
     public Difficulty getDifficulty() {
         return difficulty;
     }
@@ -71,18 +63,20 @@ public class Flashcard {
         this.difficulty = difficulty;
     }
 
-//    @PrePersist
-//    protected void onCreate() {
-//        this.knowledgeLevel = 0;
-//    }
+    public boolean isAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(boolean accepted) {
+        this.accepted = accepted;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Flashcard)) return false;
         Flashcard flashcard = (Flashcard) o;
-        return //knowledgeLevel == flashcard.knowledgeLevel &&
-                Objects.equals(id, flashcard.id) &&
+        return Objects.equals(id, flashcard.id) &&
                 Objects.equals(question, flashcard.question) &&
                 Objects.equals(answer, flashcard.answer) &&
                 Objects.equals(category, flashcard.category) &&
@@ -92,7 +86,6 @@ public class Flashcard {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, question, answer, category, //knowledgeLevel,
-                difficulty);
+        return Objects.hash(id, question, answer, category, difficulty);
     }
 }

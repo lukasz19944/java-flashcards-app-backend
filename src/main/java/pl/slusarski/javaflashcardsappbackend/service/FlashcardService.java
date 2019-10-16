@@ -38,6 +38,8 @@ public class FlashcardService {
     public Flashcard saveOrUpdateFlashcard(Flashcard flashcard) {
         Iterable<User> users = userService.getAllUsers();
 
+        flashcard.setAccepted(true);
+
         Flashcard newFlashcard = flashcardRepository.save(flashcard);
 
         for (User user : users) {
@@ -97,6 +99,12 @@ public class FlashcardService {
         }
 
         return randomFlashcards;
+    }
+
+    public Flashcard proposeFlashcard(Flashcard flashcard) {
+        flashcard.setAccepted(false);
+
+        return flashcardRepository.save(flashcard);
     }
 
 }

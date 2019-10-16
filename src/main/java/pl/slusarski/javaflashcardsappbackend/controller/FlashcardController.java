@@ -75,4 +75,17 @@ public class FlashcardController {
     public Iterable<Flashcard> createRandomTest() {
         return flashcardService.createRandomTest();
     }
+
+    @PostMapping("/propose")
+    public ResponseEntity<?> proposeNewFlashcard(@Valid @RequestBody Flashcard flashcard, BindingResult result) {
+        ResponseEntity<?> errorMap = errorService.mapValidationService(result);
+
+        if (errorMap != null) {
+            return errorMap;
+        }
+
+        Flashcard newFlashcard = flashcardService.proposeFlashcard(flashcard);
+
+        return new ResponseEntity<>(newFlashcard, HttpStatus.CREATED);
+    }
 }

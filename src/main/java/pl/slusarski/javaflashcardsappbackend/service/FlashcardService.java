@@ -27,8 +27,12 @@ public class FlashcardService {
         this.userFlashcardRepository = userFlashcardRepository;
     }
 
-    public Iterable<Flashcard> findAllFlashcards() {
-        return flashcardRepository.findAll();
+    public Iterable<Flashcard> findAllAcceptedFlashcards() {
+        return flashcardRepository.findAllByAccepted(true);
+    }
+
+    public Iterable<Flashcard> findAllNotAcceptedFlashcards() {
+        return flashcardRepository.findAllByAccepted(false);
     }
 
     public Iterable<String> findAllCategories() {
@@ -36,23 +40,27 @@ public class FlashcardService {
     }
 
     public Flashcard saveOrUpdateFlashcard(Flashcard flashcard) {
-        Iterable<User> users = userService.getAllUsers();
-
         flashcard.setAccepted(true);
 
         Flashcard newFlashcard = flashcardRepository.save(flashcard);
 
+        createUserFlashcardForAll(newFlashcard);
+
+        return newFlashcard;
+    }
+
+    private void createUserFlashcardForAll(Flashcard flashcard) {
+        Iterable<User> users = userService.getAllUsers();
+
         for (User user : users) {
             UserFlashcard userFlashcard = new UserFlashcard();
 
-            userFlashcard.setFlashcard(newFlashcard);
+            userFlashcard.setFlashcard(flashcard);
             userFlashcard.setKnowledgeLevel(0);
             userFlashcard.setUser(user);
 
             userFlashcardService.createOrUpdateKnowledgeLevel(userFlashcard);
         }
-
-        return newFlashcard;
     }
 
     public long countAllFlashcards() {
@@ -107,4 +115,18 @@ public class FlashcardService {
         return flashcardRepository.save(flashcard);
     }
 
+    public void acceptFlashcard(Long flashcardId) {
+        Optional<Flashcard> flashcardOptional = flashcardRepository.findById(flashcardId);
+
+        Flashcard flashcard = flashcardOptional.get();
+        flashcard.setAccepted(true);
+
+        Flashcard savedFlashcard = flashcardRepository.save(flashcard);
+
+        createUserFlashcardForAll(savedFlashcard);
+    }
+
+    public void rejectFlashcard(Long flashcardId) {
+        flashcardRepository.delete(findFlashcardById(flashcardId));
+    }
 }

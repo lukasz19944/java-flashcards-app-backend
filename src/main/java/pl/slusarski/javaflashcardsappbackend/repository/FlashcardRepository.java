@@ -10,6 +10,8 @@ import java.util.List;
 @Repository
 public interface FlashcardRepository extends CrudRepository<Flashcard, Long> {
 
+    Iterable<Flashcard> findAllByAccepted(boolean accepted);
+
     @Query("SELECT DISTINCT f.category FROM Flashcard f WHERE f.accepted = 1")
     Iterable<String> findAllCategories();
 

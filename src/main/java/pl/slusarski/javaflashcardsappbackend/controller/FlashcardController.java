@@ -26,10 +26,17 @@ public class FlashcardController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("")
-    public Iterable<Flashcard> getAllFlashcards() {
-        return flashcardService.findAllFlashcards();
+    @GetMapping("/accepted")
+    public Iterable<Flashcard> getAllAcceptedFlashcards() {
+        return flashcardService.findAllAcceptedFlashcards();
     }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/notAccepted")
+    public Iterable<Flashcard> getAllNotAcceptedFlashcards() {
+        return flashcardService.findAllNotAcceptedFlashcards();
+    }
+
 
     @GetMapping("/category")
     public Iterable<String> getAllCategories() {
@@ -87,5 +94,17 @@ public class FlashcardController {
         Flashcard newFlashcard = flashcardService.proposeFlashcard(flashcard);
 
         return new ResponseEntity<>(newFlashcard, HttpStatus.CREATED);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/accept/{flashcardId}")
+    public void acceptFlashcard(@PathVariable String flashcardId) {
+        flashcardService.acceptFlashcard(Long.parseLong(flashcardId));
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/reject/{flashcardId}")
+    public void rejectFlashcard(@PathVariable String flashcardId) {
+        flashcardService.rejectFlashcard(Long.parseLong(flashcardId));
     }
 }

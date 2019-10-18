@@ -9,6 +9,8 @@ import pl.slusarski.javaflashcardsappbackend.domain.User;
 import pl.slusarski.javaflashcardsappbackend.domain.UserFlashcard;
 import pl.slusarski.javaflashcardsappbackend.repository.UserFlashcardRepository;
 
+import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,5 +92,21 @@ public class UserFlashcardService {
     @Transactional
     public void deleteUserFlashcardByFlashcard(Flashcard flashcard) {
         userFlashcardRepository.deleteAllByFlashcard(flashcard);
+    }
+
+    public Iterable<UserFlashcard> createRandomTest(String username) {
+        User user = userDetailsService.loadUserByUsername(username);
+
+        List<UserFlashcard> flashcards = (List<UserFlashcard>) userFlashcardRepository.findAllByUserAndFlashcard_Accepted(user, true);
+
+        List<UserFlashcard> randomFlashcards = new ArrayList<>();
+        List<UserFlashcard> copy = new ArrayList<>(flashcards);
+
+        SecureRandom rand = new SecureRandom();
+        for (int i = 0; i < Math.min(20, flashcards.size()); i++) {
+            randomFlashcards.add(copy.remove(rand.nextInt(copy.size())));
+        }
+
+        return randomFlashcards;
     }
 }

@@ -78,11 +78,6 @@ public class FlashcardController {
         return flashcardService.findFlashcardById(Long.parseLong(flashcardId));
     }
 
-    @GetMapping("/random/")
-    public Iterable<Flashcard> createRandomTest() {
-        return flashcardService.createRandomTest();
-    }
-
     @PostMapping("/propose")
     public ResponseEntity<?> proposeNewFlashcard(@Valid @RequestBody Flashcard flashcard, BindingResult result) {
         ResponseEntity<?> errorMap = errorService.mapValidationService(result);

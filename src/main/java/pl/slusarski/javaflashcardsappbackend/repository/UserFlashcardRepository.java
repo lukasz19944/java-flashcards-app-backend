@@ -14,6 +14,8 @@ import java.util.List;
 
 public interface UserFlashcardRepository extends CrudRepository<UserFlashcard, Long> {
 
+    Iterable<UserFlashcard> findAllByUserAndFlashcard_Accepted(User user, boolean accepted);
+
     Iterable<UserFlashcard> findAllByFlashcard_CategoryAndKnowledgeLevelInAndUserAndFlashcard_Accepted(
             String category, int[] knowledgeLevel, User user, boolean accepted);
 

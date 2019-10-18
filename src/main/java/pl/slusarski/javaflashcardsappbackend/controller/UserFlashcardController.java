@@ -63,4 +63,10 @@ public class UserFlashcardController {
 
         return new ResponseEntity<>(newUserFlashcard, HttpStatus.CREATED);
     }
+
+    @GetMapping("/random/")
+    public Iterable<UserFlashcard> createRandomTest(Principal principal) {
+        return userFlashcardService.createRandomTest(principal.getName());
+    }
+
 }

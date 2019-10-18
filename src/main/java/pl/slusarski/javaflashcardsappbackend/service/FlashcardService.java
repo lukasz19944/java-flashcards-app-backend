@@ -8,8 +8,10 @@ import pl.slusarski.javaflashcardsappbackend.domain.UserFlashcard;
 import pl.slusarski.javaflashcardsappbackend.repository.FlashcardRepository;
 import pl.slusarski.javaflashcardsappbackend.repository.UserFlashcardRepository;
 
-import java.security.SecureRandom;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class FlashcardService {
@@ -93,20 +95,6 @@ public class FlashcardService {
         userFlashcardService.deleteUserFlashcardByFlashcard(flashcard.get());
 
         flashcardRepository.delete(findFlashcardById(id));
-    }
-
-    public Iterable<Flashcard> createRandomTest() {
-        List<Flashcard> flashcards = (List<Flashcard>) flashcardRepository.findAll();
-
-        List<Flashcard> randomFlashcards = new ArrayList<>();
-        List<Flashcard> copy = new ArrayList<>(flashcards);
-
-        SecureRandom rand = new SecureRandom();
-        for (int i = 0; i < Math.min(20, flashcards.size()); i++) {
-            randomFlashcards.add(copy.remove(rand.nextInt(copy.size())));
-        }
-
-        return randomFlashcards;
     }
 
     public Flashcard proposeFlashcard(Flashcard flashcard) {

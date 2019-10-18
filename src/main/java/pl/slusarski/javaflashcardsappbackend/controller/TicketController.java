@@ -1,9 +1,14 @@
 package pl.slusarski.javaflashcardsappbackend.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.slusarski.javaflashcardsappbackend.domain.Ticket;
 import pl.slusarski.javaflashcardsappbackend.service.ErrorService;
 import pl.slusarski.javaflashcardsappbackend.service.TicketService;
+
+import javax.validation.Valid;
 
 @RestController
 @CrossOrigin
@@ -19,7 +24,15 @@ public class TicketController {
     }
 
     @PostMapping("")
-    public Ticket createTicket(@RequestBody Ticket ticket) {
-        return ticketService.createTicket(ticket);
+    public ResponseEntity<?> createTicket(@Valid @RequestBody Ticket ticket, BindingResult result) {
+        ResponseEntity<?> errorMap = errorService.mapValidationService(result);
+
+        if (errorMap != null) {
+            return errorMap;
+        }
+
+        Ticket newTicket = ticketService.createTicket(ticket);
+
+        return new ResponseEntity<>(newTicket, HttpStatus.CREATED);
     }
 }

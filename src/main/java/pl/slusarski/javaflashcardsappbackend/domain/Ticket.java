@@ -1,6 +1,7 @@
 package pl.slusarski.javaflashcardsappbackend.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Ticket {
@@ -11,9 +12,9 @@ public class Ticket {
 
     @OneToOne
     private Flashcard flashcard;
-//
-//    @Column(length = 3000)
-//    @NotBlank(message = "Powyższe pole jest wymagane")
+
+    @Column(length = 3000)
+    @NotBlank(message = "Powyższe pole jest wymagane")
     private String message;
 
     public Ticket() {

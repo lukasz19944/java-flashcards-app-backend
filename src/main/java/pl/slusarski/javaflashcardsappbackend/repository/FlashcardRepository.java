@@ -15,7 +15,7 @@ public interface FlashcardRepository extends CrudRepository<Flashcard, Long> {
     @Query("SELECT DISTINCT f.category FROM Flashcard f WHERE f.accepted = 1")
     Iterable<String> findAllCategories();
 
-    long count();
+    long countAllByAccepted(boolean accepted);
 
     @Query("SELECT f.category, COUNT(f) FROM Flashcard f WHERE f.accepted = 1 GROUP BY f.category")
     List<Object[]> countByCategory();

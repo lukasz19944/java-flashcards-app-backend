@@ -66,7 +66,7 @@ public class FlashcardService {
     }
 
     public long countAllFlashcards() {
-        return flashcardRepository.count();
+        return flashcardRepository.countAllByAccepted(true);
     }
 
     public Map<String, Integer> countAllFlashcardsByCategory() {

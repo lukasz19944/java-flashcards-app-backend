@@ -2,11 +2,11 @@ package pl.slusarski.javaflashcardsappbackend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.slusarski.javaflashcardsappbackend.domain.Difficulty;
 import pl.slusarski.javaflashcardsappbackend.domain.Flashcard;
 import pl.slusarski.javaflashcardsappbackend.domain.User;
 import pl.slusarski.javaflashcardsappbackend.domain.UserFlashcard;
 import pl.slusarski.javaflashcardsappbackend.repository.FlashcardRepository;
-import pl.slusarski.javaflashcardsappbackend.repository.UserFlashcardRepository;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,15 +18,13 @@ public class FlashcardService {
 
     private final FlashcardRepository flashcardRepository;
     private final UserService userService;
-    private final UserFlashcardRepository userFlashcardRepository;
 
     @Autowired
     private UserFlashcardService userFlashcardService;
 
-    public FlashcardService(FlashcardRepository flashcardRepository, UserService userService, UserFlashcardRepository userFlashcardRepository) {
+    public FlashcardService(FlashcardRepository flashcardRepository, UserService userService) {
         this.flashcardRepository = flashcardRepository;
         this.userService = userService;
-        this.userFlashcardRepository = userFlashcardRepository;
     }
 
     public Iterable<Flashcard> findAllAcceptedFlashcards() {
@@ -39,6 +37,18 @@ public class FlashcardService {
 
     public Iterable<String> findAllCategories() {
         return flashcardRepository.findAllCategories();
+    }
+
+    public Iterable<String> findAllCategoriesByDifficulty(String difficulty) {
+        Difficulty[] difficulties;
+
+        if (difficulty.equals("all")) {
+            difficulties = Difficulty.values();
+        } else {
+            difficulties = new Difficulty[]{Difficulty.valueOf(difficulty.toUpperCase())};
+        }
+
+        return flashcardRepository.findAllCategoriesByDifficulty(difficulties);
     }
 
     public Flashcard saveOrUpdateFlashcard(Flashcard flashcard) {

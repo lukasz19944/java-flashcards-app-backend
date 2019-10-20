@@ -43,6 +43,11 @@ public class FlashcardController {
         return flashcardService.findAllCategories();
     }
 
+    @GetMapping("/category/difficulty/{difficulty}")
+    public Iterable<String> getAllCategoriesByDifficulty(@PathVariable String difficulty) {
+        return flashcardService.findAllCategoriesByDifficulty(difficulty);
+    }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("")
     public ResponseEntity<?> createOrUpdateNewFlashcard(@Valid @RequestBody Flashcard flashcard, BindingResult result) {

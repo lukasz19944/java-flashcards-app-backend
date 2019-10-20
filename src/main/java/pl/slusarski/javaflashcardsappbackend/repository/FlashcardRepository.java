@@ -2,7 +2,9 @@ package pl.slusarski.javaflashcardsappbackend.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import pl.slusarski.javaflashcardsappbackend.domain.Difficulty;
 import pl.slusarski.javaflashcardsappbackend.domain.Flashcard;
 
 import java.util.List;
@@ -14,6 +16,9 @@ public interface FlashcardRepository extends CrudRepository<Flashcard, Long> {
 
     @Query("SELECT DISTINCT f.category FROM Flashcard f WHERE f.accepted = 1")
     Iterable<String> findAllCategories();
+
+    @Query("SELECT DISTINCT f.category FROM Flashcard f WHERE f.accepted = 1 AND f.difficulty IN :difficulty")
+    Iterable<String> findAllCategoriesByDifficulty(@Param("difficulty") Difficulty[] difficulty);
 
     long countAllByAccepted(boolean accepted);
 

@@ -2,6 +2,8 @@ package pl.slusarski.javaflashcardsappbackend.service;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import pl.slusarski.javaflashcardsappbackend.domain.Flashcard;
 import pl.slusarski.javaflashcardsappbackend.domain.Ticket;
 import pl.slusarski.javaflashcardsappbackend.repository.TicketRepository;
 
@@ -25,6 +27,11 @@ public class TicketService {
 
     public void deleteTicket(Long ticketId) {
         this.ticketRepository.deleteById(ticketId);
+    }
+
+    @Transactional
+    public void deleteTicketsByFlashcard(Flashcard flashcard) {
+        ticketRepository.deleteAllByFlashcard(flashcard);
     }
 
     public Ticket findTicketById(Long ticketId) {

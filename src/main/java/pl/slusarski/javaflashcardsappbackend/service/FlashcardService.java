@@ -18,13 +18,15 @@ public class FlashcardService {
 
     private final FlashcardRepository flashcardRepository;
     private final UserService userService;
+    private final TicketService ticketService;
 
     @Autowired
     private UserFlashcardService userFlashcardService;
 
-    public FlashcardService(FlashcardRepository flashcardRepository, UserService userService) {
+    public FlashcardService(FlashcardRepository flashcardRepository, UserService userService, TicketService ticketService) {
         this.flashcardRepository = flashcardRepository;
         this.userService = userService;
+        this.ticketService = ticketService;
     }
 
     public Iterable<Flashcard> findAllAcceptedFlashcards() {
@@ -101,8 +103,11 @@ public class FlashcardService {
 
     public void deleteFlashcardById(Long id) {
         Optional<Flashcard> flashcard = flashcardRepository.findById(id);
+        Flashcard flashcardObj = flashcard.get();
 
-        userFlashcardService.deleteUserFlashcardByFlashcard(flashcard.get());
+        ticketService.deleteTicketsByFlashcard(flashcardObj);
+
+        userFlashcardService.deleteUserFlashcardByFlashcard(flashcardObj);
 
         flashcardRepository.delete(findFlashcardById(id));
     }

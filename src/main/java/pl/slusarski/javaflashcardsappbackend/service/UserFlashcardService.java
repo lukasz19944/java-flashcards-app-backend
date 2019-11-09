@@ -102,6 +102,8 @@ public class UserFlashcardService {
         List<UserFlashcard> randomFlashcards = new ArrayList<>();
         List<UserFlashcard> copy = new ArrayList<>(flashcards);
 
+        System.out.println(flashcards.size());
+
         SecureRandom rand = new SecureRandom();
         for (int i = 0; i < Math.min(20, flashcards.size()); i++) {
             randomFlashcards.add(copy.remove(rand.nextInt(copy.size())));
